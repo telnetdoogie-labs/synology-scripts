@@ -2,24 +2,28 @@
 
 [copy_SSL_certs.sh](./copy_SSL_certs.sh)
 
-This script can be used to copy certificates, and generate a new `keystore` file specifically for use on the Unifi platform
-(I use this to generate `keystore` file for a Unifi Dream Machine Pro)
+This script can be used to copy certificates, and generate a new `keystore` file specifically for use on the UniFi platform
+(I use this to generate `keystore` file for a UniFi Dream Machine Pro)
 
 It will only move files and generate a keystore if the certificates have changed between source and destination.
 
 I schedule this script to run nightly.
+
 - If cert has not changed, the script will exit
 - If a new cert is detected, it will copy files and generate keystore, and exit with code 1.
   Exiting with code 1 on a 'successful push' allows "Send run details only when the script terminates abnormally" on the Synology Task Scheduler to send an email summarizing that changes were made.
 
 ### Downloading
 
-* ssh into the synology as a user with `sudo` rights
-* download the script:
+- ssh into the Synology as a user with `sudo` rights
+- download the script:
+
 ```
 sudo wget -O copy_SSL_certs.sh https://raw.githubusercontent.com/telnetdoogie/synology-scripts/main/copy_SSL_certs.sh
 ```
-* Make it executable:
+
+- Make it executable:
+
 ```
 sudo chmod +x copy_SSL_certs.sh
 ```
@@ -35,9 +39,8 @@ You will need to edit parameters in this file to suit your specific setup:
 ---
 
 Typical output when certificates are found and moved:
+
 ```
 Certificates have been updated; Copying to new location
 Importing keystore /var/services/homes/admin/ssl_certs/temp.p12 to /var/services/homes/admin/ssl_certs/keystore...
 ```
-
-

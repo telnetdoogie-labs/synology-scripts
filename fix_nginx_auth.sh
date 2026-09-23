@@ -36,7 +36,7 @@ echo "After:"
 echo -e "$NEW"
 echo
 
-# If changes were made, reload nginx configs.
+# If changes were made, reload NGINX configs.
 if [[ "${ORIG}" != "${NEW}" ]]; then
 	echo "Changes made... reloading nginx"
 	synow3tool --nginx=reload

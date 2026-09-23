@@ -3,7 +3,7 @@
 
 # Finding
 echo 'Will Remove..'
-find /volume1/Media/ -name '.DS_Store' -type f 
+find /volume1/Media/ -name '.DS_Store' -type f
 find /volume1/Media/ -name '._*' -type f -size -10k
 find /volume1/Media/ -name '.AppleDouble' -type d
 # Deleting

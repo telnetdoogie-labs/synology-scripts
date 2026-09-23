@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copies Letsencrypt certs to staging for network devices
+# Copies Let's Encrypt certs to staging for network devices
 
 SCP_USER=admin
 FILE_TO_CHECK=cert.pem
@@ -9,10 +9,10 @@ NEW_CERT_PATH=/volume1/docker/certbot/etc_letsencrypt/live/{your_domain_here}
 DESTINATION_PATH=/var/services/homes/admin/ssl_certs
 KEYTOOL_PATH=/var/packages/java-installer/target/bin
 
-# default keystorepass for Unifi, change if generating for some other system
+# default keystorepass for UniFi, change if generating for some other system
 KEYSTORE_PASS=aircontrolenterprise
-# default alias for Unifi, change if generaing for some other system
-KEYSTORE_ALIAS=unifi
+# default alias for UniFi, change if generaing for some other system
+KEYSTORE_ALIAS=UniFi
 
 # Get MD5 Hash representations of the current cert file
 #  and the previously copied version in the destination for comparison

@@ -8,7 +8,7 @@ fi
 
 echo "Listing all listening ports with processes (and Docker containers if applicable):"
 echo "----------------------------------------------------------------------------------"
-echo 
+echo
 echo "Grabbing Docker Ports..."
 # Collect Docker container host port mappings
 declare -A port_to_container
@@ -70,4 +70,3 @@ sudo netstat -tulnp | grep -E "^tcp " | while read -r line; do
 done | sort -n
 
 echo "----------------------------------------------------------------------------------"
-

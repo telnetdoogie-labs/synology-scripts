@@ -16,15 +16,15 @@ This script will only UPDATE certificates that were set up in DSM; It cannot add
 
 If you have certs from somewhere like **LetsEncrypt**, you will have a few files. It is not completely intuitive based on the names; in order to have this script work consistently, the correct files must be initially uploaded into DSM. Things can _appear_ to work with the incorrect files uploaded, however, you should upload the following files into DSM when prompted:
 
-| DSM Form Field | File to Upload |
-| ----------------- | --------- |
-| **Private Key** | `privkey.pem` |
-| **Certificate** | `cert.pem` |
-| **Intermediate certificate** | --*leave blank*-- |
+| DSM Form Field               | File to Upload    |
+| ---------------------------- | ----------------- |
+| **Private Key**              | `privkey.pem`     |
+| **Certificate**              | `cert.pem`        |
+| **Intermediate certificate** | --_leave blank_-- |
 
 DSM certs **CAN** work if you upload a mixture of `fullchain.pem` and `chain.pem` as the Cert and Intermediate Certs respectively... However, future reverse proxy updates and DSM changes will become VERY slow as DSM reconstructs its own cert files for you, AND the script provided here will no longer work. So... Don't import the wrong files. Only updating the two shown here will make your system run much faster during restarts and when creating or editing Reverse Proxy entries.
 
-*_If you get browser untrusted errors with certs still, add `chain.pem` to the "Intermediate Certificate" - however DSM updates and reverse proxy changes will slow down a LOT._
+\*_If you get browser untrusted errors with certs still, add `chain.pem` to the "Intermediate Certificate" - however DSM updates and reverse proxy changes will slow down a LOT._
 
 ## First time run, Configuration File
 
@@ -54,7 +54,9 @@ CNs to check/update:
 
 Done... No Certificates to Check / Update.
 ```
+
 After first-run, the newly created `cert_config.json` contains:
+
 ```json
 {
   "config": [
@@ -86,6 +88,7 @@ In order to have `check_certs.sh` look for updated versions of these certificate
   ]
 }
 ```
+
 those folders are the destination for my **certbot** scripts that run periodically to generate LetsEncrypt certificates.
 
 ## Checking your certificates, no changes (default behavior)
@@ -136,6 +139,7 @@ Checking non-package cert folders for cert ID: auLTvE, CN: *.myseconddomain.com.
  (19 found, 19 mismatches)
 
 ```
+
 ## Updating your certificates
 
 When you have certificates that show as red and need to be updated, you can run the script with
@@ -149,29 +153,34 @@ After the certificate update, you'll see the "check" run one more time... Any pr
 Only additional services where mismatches occured will be restarted.
 
 ### Other Options
+
 #### VPNCenter Certificates
-By default, if you have VPNCenter installed, this script will also regenerate your VPN Certificates automatically if certs are updated for the VPNCenter application.
-If you DO NOT WANT VPN Center certificates updated (since this may mean that new VPN client files may need to be regenerated if you include certs in your client config), 
+
+By default, if you have VPN Center installed, this script will also regenerate your VPN Certificates automatically if certs are updated for the VPNCenter application.
+If you DO NOT WANT VPN Center certificates updated (since this may mean that new VPN client files may need to be regenerated if you include certs in your client config),
 add the additional option:
 
 `sudo ./check_certs.sh --update --novpnregen`
 
 #### Dry-Run / Do not modify files
-To run the script without overwriting any files or restarting any apps, pass this additional option. 
+
+To run the script without overwriting any files or restarting any apps, pass this additional option.
 
 `sudo ./check_certs.sh --update --dry-run`
 
 In this mode, actual certificates will not be updated, and Packages that would have been affected with an updated cert will not be restarted (This gives a chance to check for what WOULD change and is good for debugging)
 
-
 ## Downloading
 
-* ssh into the synology as a user with `sudo` rights
-* download the script:
+- ssh into the synology as a user with `sudo` rights
+- download the script:
+
 ```
 sudo wget -O check_certs.sh https://raw.githubusercontent.com/telnetdoogie/synology-scripts/main/check_certs.sh
 ```
-* Make it executable:
+
+- Make it executable:
+
 ```
 sudo chmod +x check_certs.sh
 ```
@@ -186,6 +195,7 @@ Don't forget in your scheduled task that you'll need to `cd` to where the config
 cd /volume1/scripts
 bash /volume1/scripts/check_certs.sh --update
 ```
-* Run as: root
-* Schedule: Daily, at midnight
-* My config file and script are in `/volume1/scripts`
+
+- Run as: root
+- Schedule: Daily, at midnight
+- My config file and script are in `/volume1/scripts`

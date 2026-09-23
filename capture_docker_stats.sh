@@ -72,7 +72,7 @@ while [[ $STOPPED = false ]]; do
 		.MemUsage = .MemUsage.Memory |
 	{dateTime, ID, Name, Container, CPUPerc, MemPerc, MemUsage, MemMax}
 	')
-	
+
 	# Write the JSON to the log file
 	echo "$UPDATED_JSON" >> "$LOG_FILE"
 

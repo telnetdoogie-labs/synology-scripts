@@ -15,4 +15,3 @@ for container_id in $(docker container ls -q); do
     # Print the container name and logger in table format
     printf "%-30s %-15s\n" "$container_name" "$logger"
 done
-

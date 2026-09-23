@@ -66,7 +66,7 @@ for CONTAINER in "${CONTAINERS[@]}"; do
 		if [[ "${EXT_IP}" == "${PUBLIC_IP}" ]]; then
 			output_error "  - ${EXT_IP}"
 		else
-			output "  - ${EXT_IP}" 
+			output "  - ${EXT_IP}"
 		fi
 	else
 		output_error "  - ${EXT_IP}"
@@ -75,14 +75,14 @@ for CONTAINER in "${CONTAINERS[@]}"; do
 	if docker exec "${CONTAINER}" which ping >/dev/null 2>&1; then
 		echo " Check internet connectivity:"
 		if docker exec "${CONTAINER}" ping -c 2 -W 1 8.8.8.8 > /dev/null 2>&1; then
-			output "  - OK" 
+			output "  - OK"
 		else
-			output_error "  - FAIL" 
+			output_error "  - FAIL"
 		fi
 
 		echo " Check DNS resolution:"
 		if docker exec "${CONTAINER}" ping -c 2 -W 1 google.com > /dev/null 2>&1; then
-			output "  - OK" 
+			output "  - OK"
 		else
 			output_error "  - FAIL"
 		fi

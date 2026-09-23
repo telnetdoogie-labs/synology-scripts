@@ -8,7 +8,7 @@ echo "------------------------------------------"
 docker network ls --format "{{.Name}}" | while read -r network; do
   # Inspect the network and extract the subnet(s)
   subnets=$(docker network inspect "$network" | grep -oP '(?<="Subnet": ")[^"]+')
-  
+
   # Display the network name and its subnets
   echo "Network: $network"
   if [ -n "$subnets" ]; then
