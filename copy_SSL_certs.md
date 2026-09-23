@@ -19,7 +19,7 @@ I schedule this script to run nightly.
 - download the script:
 
 ```
-sudo wget -O copy_SSL_certs.sh https://raw.githubusercontent.com/telnetdoogie/synology-scripts/main/copy_SSL_certs.sh
+sudo wget -O copy_SSL_certs.sh https://raw.githubusercontent.com/telnetdoogie-labs/synology-scripts/main/copy_SSL_certs.sh
 ```
 
 - Make it executable:

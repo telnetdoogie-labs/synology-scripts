@@ -176,7 +176,7 @@ In this mode, actual certificates will not be updated, and Packages that would h
 - download the script:
 
 ```
-sudo wget -O check_certs.sh https://raw.githubusercontent.com/telnetdoogie/synology-scripts/main/check_certs.sh
+sudo wget -O check_certs.sh https://raw.githubusercontent.com/telnetdoogie-labs/synology-scripts/main/check_certs.sh
 ```
 
 - Make it executable:

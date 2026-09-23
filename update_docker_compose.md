@@ -12,7 +12,7 @@ This script must be run as `root` or via `sudo`
 - download the script:
 
 ```
-sudo wget -O update_docker_compose.sh https://raw.githubusercontent.com/telnetdoogie/synology-scripts/main/update_docker_compose.sh
+sudo wget -O update_docker_compose.sh https://raw.githubusercontent.com/telnetdoogie-labs/synology-scripts/main/update_docker_compose.sh
 ```
 
 - Make it executable:
