@@ -40,7 +40,8 @@ echo
 # use this to remove duplicates
 declare -A listed_ports
 
-sudo netstat -tulnp | grep -E "^tcp " | while read -r line; do
+# include tcp6 so IPv6-only listeners show up too (duplicates are skipped below)
+sudo netstat -tlnp | grep -E "^tcp6? " | while read -r line; do
     # Extract address:port and PID/process fields
     addr_port=$(echo "$line" | awk '{print $4}')
     pid_process=$(echo "$line" | awk '{print $7}')
