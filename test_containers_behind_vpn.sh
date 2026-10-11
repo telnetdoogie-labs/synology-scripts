@@ -35,13 +35,19 @@ echo    "=======================================================================
 echo
 echo "This hosts public IP:"
 PUBLIC_IP=$(wget -q -O - http://api.ipify.org)
+if [[ -z "$PUBLIC_IP" ]]; then
+	output_error "  - Could not determine this host's public IP; results below can't be trusted."
+	echo
+	exit 1
+fi
 output "  - $PUBLIC_IP"
 echo
 
 for CONTAINER in "${CONTAINERS[@]}"; do
 	echo -e "Checking ${BOLD}${CONTAINER}${NC}..."
 
-	if ! docker container ps | grep ${CONTAINER} >/dev/null 2>&1; then
+	# exact name match, so e.g. "transmission" doesn't match "transmission-exporter" or an image name
+	if ! docker container ps --format '{{.Names}}' | grep -Fxq "${CONTAINER}"; then
 		output_error "  - Container not running"
 		echo
 		continue
@@ -63,7 +69,9 @@ for CONTAINER in "${CONTAINERS[@]}"; do
 		EXT_IP="\"No wget,curl,nc available in container\""
 	fi
 	if [[ $EXT_IP_GRABBED == "true" ]]; then
-		if [[ "${EXT_IP}" == "${PUBLIC_IP}" ]]; then
+		if [[ -z "${EXT_IP}" ]]; then
+			output_error "  - Could not determine external IP (no response from api.ipify.org)"
+		elif [[ "${EXT_IP}" == "${PUBLIC_IP}" ]]; then
 			output_error "  - ${EXT_IP}"
 		else
 			output "  - ${EXT_IP}"

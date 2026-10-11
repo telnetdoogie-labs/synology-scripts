@@ -16,7 +16,7 @@ done
 
 # Validate if the container name is provided and exists
 if [ ! -z "$CONTAINER_NAME" ]; then
-	if ! docker ps --format '{{.Names}}' | grep -wq "$CONTAINER_NAME"; then
+	if ! docker ps --format '{{.Names}}' | grep -Fxq "$CONTAINER_NAME"; then
 		echo "Error: Container '$CONTAINER_NAME' is not running or does not exist."
 		exit 1
 	fi

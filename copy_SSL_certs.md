@@ -12,6 +12,7 @@ I schedule this script to run nightly.
 - If cert has not changed, the script will exit
 - If a new cert is detected, it will copy files and generate keystore, and exit with code 1.
   Exiting with code 1 on a 'successful push' allows "Send run details only when the script terminates abnormally" on the Synology Task Scheduler to send an email summarizing that changes were made.
+- If anything fails (missing source cert, copy, `openssl` or `keytool` errors), the script exits with code 2. This also triggers the Task Scheduler email, and the output explains what went wrong.
 
 ### Downloading
 

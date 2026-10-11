@@ -62,7 +62,9 @@ exists_in_array() {
 get_cert_cn() {
     local cert_file="$1"
     if [[ -f "$cert_file" ]]; then
-        openssl x509 -in "$cert_file" -noout -subject | awk '{print $NF}'
+        # multiline nameopt gives one "commonName = value" line regardless of OpenSSL version
+        openssl x509 -in "$cert_file" -noout -subject -nameopt multiline |
+            sed -n 's/^ *commonName *= *//p' | head -n 1
     else
         echo ""
     fi
@@ -160,9 +162,6 @@ check_root_privileges() {
 
 # Set update to true if parameter passed
 check_parameters() {
-    if [[ "$1" == "--update" ]]; then
-        UPDATE=true
-    fi
     for arg in "$@"; do
         case "$arg" in
             --update)
@@ -236,9 +235,11 @@ overwrite_certificates() {
         echo "   - Dry Run - not updating $dest_folder"
     else
         local source_folder=$2
-        if ! cp "$source_folder/"{cert,chain,fullchain,privkey}.pem "$dest_folder/" &&
+        # group all three commands so a failure in ANY of them is caught
+        # (a bare `! cp ... && chown ... && chmod ...` only negates cp and skips chown/chmod on success)
+        if ! { cp "$source_folder/"{cert,chain,fullchain,privkey}.pem "$dest_folder/" &&
             chown root:root "$dest_folder/"{cert,chain,fullchain,privkey}.pem &&
-            chmod 400 "$dest_folder/"{cert,chain,fullchain,privkey}.pem; then
+            chmod 400 "$dest_folder/"{cert,chain,fullchain,privkey}.pem; }; then
             terminate "   - Error with copy, chown, or chmod certificates in $dest_folder"
         fi
     fi
@@ -267,7 +268,10 @@ check_cert_folders() {
             if [[ $? -eq 1 ]]; then
                 ((mismatch_count++))
                 if [[ "$UPDATE" == "true" ]]; then
-                    services_to_restart+=("${pkg_folder%%/*}") # the %%/* here will get the top-level Folder (the package name)
+                    # the %%/* here will get the top-level Folder (the package name); add each package only once
+                    if ! exists_in_array "${pkg_folder%%/*}" "${services_to_restart[@]}"; then
+                        services_to_restart+=("${pkg_folder%%/*}")
+                    fi
                     overwrite_certificates "${PKGS_PATH}/${pkg_folder}" "$user_cert_folder"
                 fi
             fi
@@ -418,7 +422,11 @@ echo
 if [[ "$CHANGES_MADE" == "true" ]]; then
     UPDATE=false
     echo "##################################################################"
-    echo "Changes were made... re-checking certs... All below should show ${GREEN}"
+    if [[ "$NO_OVERWRITE" == "true" ]]; then
+        echo "Dry run... re-checking certs... nothing was changed, so mismatches remain ${RED}"
+    else
+        echo "Changes were made... re-checking certs... All below should show ${GREEN}"
+    fi
     echo "##################################################################"
     echo
     check_certificates
